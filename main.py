@@ -5,7 +5,8 @@
 # im = PIL.Image.fromarray(numpy.uint8(I))
 import cv2
 import numpy as np
-from PIL import ImageFilter
+import os
+from PIL import ImageFilter1
 
 
 def orb_sim(img1, img2):
@@ -25,10 +26,9 @@ def orb_sim(img1, img2):
 
 
 def import_grey_images():
-    im_gray1 = cv2.imread('image1.jpg', cv2.IMREAD_GRAYSCALE)
-    im_gray2 = cv2.imread('image2.jpg', cv2.IMREAD_GRAYSCALE)
+    im_gray2 = cv2.imread('Pictures/image2.jpg', cv2.IMREAD_GRAYSCALE)
 
-    return im_gray1, im_gray2
+    return im_gray2
 
 
 def convert_to_black_white(img1, img2):
@@ -54,7 +54,7 @@ def blur_images(img1, img2):
     return blur1, blur2
 
 def cut_main_object():
-    image = cv2.imread('image1.jpg')
+    image = cv2.imread('Pictures/image1.jpg')
 
     # Convert the image to grayscale
     img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -66,7 +66,30 @@ def cut_main_object():
 
     return cut_out
 
-img1, img2 = import_grey_images()
+def num_of_images():
+
+    pictures_path = "C:/Users/radek/PycharmProjects/bakalaur/Python/PictureComparison/Pictures"
+    extensions = [".jpg", ".jpeg", ".png"]
+
+    images = 0
+
+    for file_name in os.listdir(pictures_path):
+        if os.path.splitext(file_name)[-1].lower() in extensions:
+            images += 1
+
+    return images
+
+def take_last_image():
+
+    max_index = num_of_images()
+    picture_path = "C:/Users/radek/PycharmProjects/bakalaur/Python/PictureComparison/Pictures/image" + str(max_index) + ".jpg"
+    grey_image = cv2.imread(picture_path, cv2.IMREAD_GRAYSCALE)
+
+    return grey_image
+
+img1 = take_last_image()
+
+img2 = import_grey_images()
 
 bw1, bw2 = convert_to_black_white(img1, img2)
 
