@@ -6,7 +6,7 @@
 import cv2
 import numpy as np
 import os
-from PIL import ImageFilter1
+from PIL import ImageFilter
 
 
 def orb_sim(img1, img2):
@@ -68,7 +68,7 @@ def cut_main_object():
 
 def num_of_images():
 
-    pictures_path = "C:/Users/radek/PycharmProjects/bakalaur/Python/PictureComparison/Pictures"
+    pictures_path = relative_path()
     extensions = [".jpg", ".jpeg", ".png"]
 
     images = 0
@@ -81,11 +81,19 @@ def num_of_images():
 
 def take_last_image():
 
+    path = relative_path()
     max_index = num_of_images()
-    picture_path = "C:/Users/radek/PycharmProjects/bakalaur/Python/PictureComparison/Pictures/image" + str(max_index) + ".jpg"
+    picture_path = path + "/image" + str(max_index) + ".jpg"
     grey_image = cv2.imread(picture_path, cv2.IMREAD_GRAYSCALE)
 
     return grey_image
+
+def relative_path():
+    absolute_path = os.path.dirname(__file__)
+    end_path = "Pictures"
+    full_path = os.path.join(absolute_path, end_path).replace('\\', '/')
+    
+    return full_path
 
 img1 = take_last_image()
 

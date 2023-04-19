@@ -3,7 +3,7 @@ import os
 
 def num_of_images():
 
-    pictures_path = "C:/Users/radtitk/Desktop/bakalaur/PictureComparison/Pictures"
+    pictures_path = relative_path()
     extensions = [".jpg", ".jpeg", ".png"]
 
     images = 0
@@ -18,12 +18,15 @@ def capture_with_screenshot():
     
     counter = num_of_images()
 
-    imagePath = "C:/Users/radtitk/Desktop/bakalaur/PictureComparison/Pictures/image" + str(counter + 1) + ".jpg"
+    path = relative_path()
+
+    imagePath = path + "/image" + str(counter + 1) + ".jpg"
 
     cap = cv2.VideoCapture(0)
     
-    cv2.namedWindow('frame', cv2.WND_PROP_FULLSCREEN)
-    cv2.setWindowProperty('frame', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    #full screen video
+    # cv2.namedWindow('frame', cv2.WND_PROP_FULLSCREEN)
+    # cv2.setWindowProperty('frame', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     
     if not cap.isOpened():
         print("Error opening camera")
@@ -51,5 +54,12 @@ def capture_with_screenshot():
 
     cap.release()
     cv2.destroyAllWindows()
+    
+def relative_path():
+    absolute_path = os.path.dirname(__file__)
+    end_path = "Pictures"
+    full_path = os.path.join(absolute_path, end_path).replace('\\', '/')
+    
+    return full_path
 
 capture_with_screenshot()
