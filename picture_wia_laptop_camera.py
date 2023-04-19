@@ -21,6 +21,10 @@ def capture_with_screenshot():
     imagePath = "C:/Users/radtitk/Desktop/bakalaur/PictureComparison/Pictures/image" + str(counter + 1) + ".jpg"
 
     cap = cv2.VideoCapture(0)
+    
+    cv2.namedWindow('frame', cv2.WND_PROP_FULLSCREEN)
+    cv2.setWindowProperty('frame', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    
     if not cap.isOpened():
         print("Error opening camera")
         return
@@ -33,7 +37,7 @@ def capture_with_screenshot():
             break
 
         cv2.imshow('frame', frame)
-
+        
         key = cv2.waitKey(1)
 
         if key == ord('p'):
