@@ -6,7 +6,7 @@
 import cv2
 import numpy as np
 import os
-from PIL import ImageFilter
+from PIL import Image
 
 
 def orb_sim(img1, img2):
@@ -24,9 +24,33 @@ def orb_sim(img1, img2):
         return 0
     return len(similar_regions) / len(matches)
 
+def take_last_image():
+
+    path = relative_path()
+    max_index = num_of_images()
+    picture_path = path + "/image" + str(max_index) + ".jpg"
+    grey_image = cv2.imread(picture_path, cv2.IMREAD_GRAYSCALE)
+
+    return grey_image
+
+def take_last_pil_image():
+    path = relative_path()
+    max_index = num_of_images()
+    picture_path = path + "/image" + str(max_index) + ".jpg"
+    image = Image.open(picture_path).convert('RGB') 
+    
+    return image
+
+def convert_pil_to_cv2(img1, img2):
+    
+    converted1, converted2 = np.array(img1, img2) 
+    
+    return converted1, converted2 
+    
+
 
 def import_grey_images():
-    im_gray2 = cv2.imread('Pictures/image2.jpg', cv2.IMREAD_GRAYSCALE)
+    im_gray2 = cv2.imread('Pictures/image4.jpg', cv2.IMREAD_GRAYSCALE)
 
     return im_gray2
 
@@ -44,8 +68,7 @@ def convert_to_black_white(img1, img2):
 def show_image(img):
     cv2.imshow("image", img)
     cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
+    cv2.destroyAllWindows() 
 
 def blur_images(img1, img2):
     blur1 = cv2.blur(img1, (10, 10))
@@ -79,14 +102,6 @@ def num_of_images():
 
     return images
 
-def take_last_image():
-
-    path = relative_path()
-    max_index = num_of_images()
-    picture_path = path + "/image" + str(max_index) + ".jpg"
-    grey_image = cv2.imread(picture_path, cv2.IMREAD_GRAYSCALE)
-
-    return grey_image
 
 def relative_path():
     absolute_path = os.path.dirname(__file__)
@@ -94,6 +109,7 @@ def relative_path():
     full_path = os.path.join(absolute_path, end_path).replace('\\', '/')
     
     return full_path
+
 
 img1 = take_last_image()
 
