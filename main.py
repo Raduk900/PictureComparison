@@ -1,131 +1,66 @@
-# Opens I as an array
-# I = numpy.asarray(PIL.Image.open('test.jpg'))
-
-# Converts to pil  image
-# im = PIL.Image.fromarray(numpy.uint8(I))
+import picture_wia_laptop_camera
+import image_helper
 import cv2
-import numpy as np
-import os
-from PIL import Image
+import image_preparation
+import convertors
+import orb_similarity
+
+# picture_wia_laptop_camera.capture_with_screenshot()
+
+last_image = image_helper.take_last_gray_image()
+image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/image6.jpg", cv2.IMREAD_GRAYSCALE)
+
+black1, black2 = image_preparation.convert_to_black_white(last_image, image_for_compare)
+
+# black1, black2 = image_preparation.convert_to_black_white(last_image, image_for_compare)
+
+last_pil_image = convertors.convert_cv2_to_pil(last_image)
+pil_image = convertors.convert_cv2_to_pil(image_for_compare)
+
+black1_pil = convertors.convert_cv2_to_pil(black1)
+black2_pil = convertors.convert_cv2_to_pil(black2)
 
 
-def orb_sim(img1, img2):
-    orb = cv2.ORB_create()
+last_no_bg = image_preparation.remove_background(last_pil_image)
+no_bg = image_preparation.remove_background(pil_image)
 
-    kp_a, desc_a = orb.detectAndCompute(img1, None)
-    kp_b, desc_b = orb.detectAndCompute(img2, None)
-
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-
-    matches = bf.match(desc_a, desc_b)
-
-    similar_regions = [i for i in matches if i.distance < 50]
-    if len(matches) == 0:
-        return 0
-    return len(similar_regions) / len(matches)
-
-def take_last_image():
-
-    path = relative_path()
-    max_index = num_of_images()
-    picture_path = path + "/image" + str(max_index) + ".jpg"
-    grey_image = cv2.imread(picture_path, cv2.IMREAD_GRAYSCALE)
-
-    return grey_image
-
-def take_last_pil_image():
-    path = relative_path()
-    max_index = num_of_images()
-    picture_path = path + "/image" + str(max_index) + ".jpg"
-    image = Image.open(picture_path).convert('RGB') 
-    
-    return image
-
-def convert_pil_to_cv2(img1, img2):
-    
-    converted1, converted2 = np.array(img1, img2) 
-    
-    return converted1, converted2 
-    
+black1_no_bg = image_preparation.remove_background(black1_pil)
+black2_no_bg = image_preparation.remove_background(black2_pil)
 
 
-def import_grey_images():
-    im_gray2 = cv2.imread('Pictures/image4.jpg', cv2.IMREAD_GRAYSCALE)
+cropped_last_pil = image_preparation.crop_image(last_no_bg)
+cropped_pil = image_preparation.crop_image(no_bg)
 
-    return im_gray2
-
-
-def convert_to_black_white(img1, img2):
-    (thresh, im_bw1) = cv2.threshold(img1, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    (thresh, im_bw2) = cv2.threshold(img2, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    thresh = 127
-    im_bw1 = cv2.threshold(img1, thresh, 255, cv2.THRESH_BINARY)[1]
-    im_bw2 = cv2.threshold(img2, thresh, 255, cv2.THRESH_BINARY)[1]
-
-    return im_bw1, im_bw2
+black1_cropped = image_preparation.crop_image(black1_no_bg)
+black2_cropped = image_preparation.crop_image(black2_no_bg)
 
 
-def show_image(img):
-    cv2.imshow("image", img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows() 
+resized_last_pil_image = convertors.change_resolution(cropped_last_pil)
+resized_pil_image = convertors.change_resolution(cropped_pil)
 
-def blur_images(img1, img2):
-    blur1 = cv2.blur(img1, (10, 10))
-    blur2 = cv2.blur(img2, (10, 10))
-
-    return blur1, blur2
-
-def cut_main_object():
-    image = cv2.imread('Pictures/image1.jpg')
-
-    # Convert the image to grayscale
-    img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    threshold = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    contours, _ = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    largest_contour = max(contours, key=cv2.contourArea)
-    mask = cv2.drawContours(np.zeros_like(image), [largest_contour], 0, (255, 255, 255), -1)
-    cut_out = cv2.bitwise_and(image, mask)
-
-    return cut_out
-
-def num_of_images():
-
-    pictures_path = relative_path()
-    extensions = [".jpg", ".jpeg", ".png"]
-
-    images = 0
-
-    for file_name in os.listdir(pictures_path):
-        if os.path.splitext(file_name)[-1].lower() in extensions:
-            images += 1
-
-    return images
+black1_resized = convertors.change_resolution(black1_cropped)
+black2_resized = convertors.change_resolution(black2_cropped)
 
 
-def relative_path():
-    absolute_path = os.path.dirname(__file__)
-    end_path = "Pictures"
-    full_path = os.path.join(absolute_path, end_path).replace('\\', '/')
-    
-    return full_path
+last_cv_image = convertors.convert_pil_to_cv2(resized_last_pil_image)
+cv_image = convertors.convert_pil_to_cv2(resized_pil_image)
+
+blur1, blur2 = image_preparation.blur_images(last_cv_image, cv_image)
+
+black1_cv = convertors.convert_pil_to_cv2(black1_resized)
+black2_cv = convertors.convert_pil_to_cv2(black2_resized)
+
+image_helper.show_image(cv_image)
+image_helper.show_image(last_cv_image)
 
 
-img1 = take_last_image()
 
-img2 = import_grey_images()
+resized = convertors.change_resolution(pil_image)
 
-bw1, bw2 = convert_to_black_white(img1, img2)
+print("Only gray: " + str(orb_similarity.orb_sim(last_image, image_for_compare)))
+print("Blure images: " + str(orb_similarity.orb_sim(blur1, blur2)))
+print("Black White: " + str(orb_similarity.orb_sim(black1_cv, black2_cv)))
+print("Without bg: " + str(orb_similarity.orb_sim(cv_image, last_cv_image)))
 
-blur1, blur2 = blur_images(img1, img2)
-
-orb_similarity = orb_sim(bw1, bw2)
-
-print("Similarity using ORB is: ", orb_similarity)
-
-image = cv2.imread("image1.jpg")
-# blurimg = cv2.blur(image, (20, 20))
-
-# cutted = cut_main_object()
-
-show_image(img1)
+# print("Image width: ", width)
+# print("Image height: ", height)
