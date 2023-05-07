@@ -1,5 +1,6 @@
 import os
 import cv2
+import requests
 
 def num_of_images():
 
@@ -34,3 +35,19 @@ def show_image(img):
     cv2.imshow("image", img)
     cv2.waitKey(0)
     cv2.destroyAllWindows() 
+    
+def download_image(url):
+    filename = "image.jpg"
+
+    response = requests.get(url)
+
+    with open(filename, "wb") as f:
+        f.write(response.content)
+        
+def delete_image(filename):
+
+    if os.path.exists(filename):
+        os.remove(filename)
+        print("Image deleted successfully")
+    else:
+        print("Image does not exist")

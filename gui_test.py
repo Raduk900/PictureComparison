@@ -1,6 +1,9 @@
 import tkinter as tk
 import server.client as client
 import picture_wia_laptop_camera
+import database.database_validations as database_validations
+from tkinter import messagebox
+import image_helper
 
 client.open_socket()
 
@@ -52,10 +55,12 @@ def add_item_click():
 
 def submit_id(id_window, id_field):
     item_id = id_field.get()
+    
+    url = database_validations.get_user_picture(item_id)
 
     id_window.destroy()
 
-    if item_id:
+    if item_id:      
         picture_wia_laptop_camera.capture_with_screenshot()
         client.sending_data(item_id)
     else:
@@ -91,7 +96,7 @@ def take_item_click():
     input_field.focus()
 
     def check_input_length(*args):
-        if len(input_field.get()) == 3:
+        if len(input_field.get()) == 6:
             submit_button.config(state="normal")
         else:
             submit_button.config(state="disabled")
@@ -108,10 +113,17 @@ def validate_input(input_str):
 def submit_click(input_field, submit_button):
     input_text = input_field.get()
     print("Input text:", input_text)
-    client.sending_data(input_text)
-    input_field.delete(0, tk.END)
-    submit_button.config(state="disabled")
-
+    print(database_validations.check_user_code(input_text))
+    if database_validations.check_user_code(input_text):
+        client.sending_data(input_text)
+        input_field.delete(0, tk.END)
+    else:
+        print("something there")
+        tk.messagebox.showerror("Invalid Code", "The entered code is not valid. Please enter a valid 6-digit code.")
+        input_field.delete(0, tk.END)
+        input_field.focus()
+        # take_item_click()
+    
 
 label = tk.Label(window, text="Choose an action", font=("Arial", 14), bg="#f0f0f0")
 label.pack(pady=(50,10))
