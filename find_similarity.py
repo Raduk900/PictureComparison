@@ -10,26 +10,26 @@ import orb_similarity
 last_image = image_helper.take_last_gray_image()
 image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/image6.jpg", cv2.IMREAD_GRAYSCALE)
 
-# def black_and_white_similartity(image1, image2):
+def black_and_white_similartity(image1, image2):
     
-#     black1, black2 = image_preparation.convert_to_black_white(image1, image2)
+    black1, black2 = image_preparation.convert_to_black_white(image1, image2)
     
-#     black1_pil = convertors.convert_cv2_to_pil(black1)
-#     black2_pil = convertors.convert_cv2_to_pil(black2)
+    black1_pil = convertors.convert_cv2_to_pil(black1)
+    black2_pil = convertors.convert_cv2_to_pil(black2)
     
-#     black1_no_bg = image_preparation.remove_background(black1_pil)
-#     black2_no_bg = image_preparation.remove_background(black2_pil)
+    black1_no_bg = image_preparation.remove_background(black1_pil)
+    black2_no_bg = image_preparation.remove_background(black2_pil)
     
-#     black1_cropped = image_preparation.crop_image(black1_no_bg)
-#     black2_cropped = image_preparation.crop_image(black2_no_bg)
+    black1_cropped = image_preparation.crop_image(black1_no_bg)
+    black2_cropped = image_preparation.crop_image(black2_no_bg)
     
-#     black1_resized = convertors.change_resolution(black1_cropped)
-#     black2_resized = convertors.change_resolution(black2_cropped)
+    black1_resized = convertors.change_resolution(black1_cropped)
+    black2_resized = convertors.change_resolution(black2_cropped)
     
-#     black1_cv = convertors.convert_pil_to_cv2(black1_resized)
-#     black2_cv = convertors.convert_pil_to_cv2(black2_resized)
+    black1_cv = convertors.convert_pil_to_cv2(black1_resized)
+    black2_cv = convertors.convert_pil_to_cv2(black2_resized)
     
-#     return orb_similarity.orb_sim(black1_cv, black2_cv)
+    return orb_similarity.orb_sim(black1_cv, black2_cv)
 
 def grey_similarity(image1, image2):
     
@@ -53,9 +53,10 @@ def blur_similarity(image1, image2):
     cv_image = convertors.convert_pil_to_cv2(resized_pil_image)
 
     blur1, blur2 = image_preparation.blur_images(last_cv_image, cv_image)
+
     
-    # image_helper.show_image(blur1)
-    # image_helper.show_image(blur2)
+    image_helper.show_image(blur1)
+    image_helper.show_image(blur2)
     
     return orb_similarity.orb_sim(blur1, blur2)
 
@@ -88,6 +89,8 @@ def final_similarity():
     print("Blure images: " + str(blur_similarity_result))
     # print("Black White: " + str(black_and_white_similartity_result))
     print("Without bg: " + str(no_bg_similarity_result))
+    
+    
         
     return grey_similarity_result + blur_similarity_result + no_bg_similarity_result
 

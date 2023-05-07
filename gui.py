@@ -61,7 +61,7 @@ def submit_id(id_window, id_field):
     id_window.destroy()
 
     if item_id:      
-        picture_wia_laptop_camera.capture_with_screenshot()
+        picture_wia_laptop_camera.capture_with_screenshot(url)
         client.sending_data(item_id)
     else:
         print("ID cannot be empty.")
@@ -119,7 +119,7 @@ def submit_click(input_field, submit_button):
         input_field.delete(0, tk.END)
     else:
         print("something there")
-        tk.messagebox.showerror("Invalid Code", "The entered code is not valid. Please enter a valid 6-digit code.")
+        tk.messagebox.showerror("Invalid Code", "Reservation code is incorrect.")
         input_field.delete(0, tk.END)
         input_field.focus()
         # take_item_click()

@@ -4,8 +4,9 @@ import image_helper
 import time
 import find_similarity
 import server.client as client
+import database.database_validations as database_validation
     
-def capture_with_screenshot():
+def capture_with_screenshot(url):
     
     counter = image_helper.num_of_images()
 
@@ -43,15 +44,22 @@ def capture_with_screenshot():
             time.sleep(2)
             
             last_image = image_helper.take_last_gray_image()
-            image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/image11.jpg", cv2.IMREAD_GRAYSCALE)
+            # image_helper.download_image(url)
+            # image_for_compare = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+            
+            
+            
+            image_for_compare = cv2.imread("image2.jpg", cv2.IMREAD_GRAYSCALE)
             
             grey_similarity_result = find_similarity.grey_similarity(last_image,image_for_compare)
+            black = find_similarity.black_and_white_similartity(last_image, image_for_compare)
             blur_similarity_result = find_similarity.blur_similarity(last_image, image_for_compare)
             no_bg_similarity_result = find_similarity.no_bg_similarity(last_image, image_for_compare)
             
             print("Only gray: " + str(grey_similarity_result))
             print("Blure images: " + str(blur_similarity_result))
             print("Without bg: " + str(no_bg_similarity_result))
+            print("Black score: " + str(black))
             
             score = grey_similarity_result + blur_similarity_result + no_bg_similarity_result
             
