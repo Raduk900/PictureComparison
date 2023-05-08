@@ -1,22 +1,21 @@
-import socket 
+import http.server
+import socketserver
 
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(('127.0.0.1',3333))
-server_socket.listen(5)
+PORT = 8000
 
-while True:
-    print("Server waiting for connection")
-    client_socket, addr = server_socket.accept()
-    print("Client connected from", addr)
+Handler = http.server.SimpleHTTPRequestHandler
+
+with socketserver.TCPServer(("192.168.166.218", PORT), Handler) as httpd:
+    print("serving at port", PORT)
+    httpd.serve_forever()
     
-    while True:
-        data = client_socket.recv(1024)
-        if not data or data.decode('utf-8') == 'END':
-            break
-        print("Received from client: %s"% data.decode("utf-8"))
-        try:
-            client_socket.send(bytes('Hey, client', 'utf-8'))
-        except:
-            print("Exited by the user")
+class MyHandler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
+        self.wfile.write(b'Hello, world!')
         
-    client_socket.close()
+
+httpd = socketserver.TCPServer(("", PORT), MyHandler)
+

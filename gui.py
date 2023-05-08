@@ -96,7 +96,7 @@ def take_item_click():
     input_field.focus()
 
     def check_input_length(*args):
-        if len(input_field.get()) == 6:
+        if len(input_field.get()) == 3:
             submit_button.config(state="normal")
         else:
             submit_button.config(state="disabled")
@@ -104,7 +104,7 @@ def take_item_click():
     input_field.bind('<KeyRelease>', check_input_length)
 
 def validate_input(input_str):
-    if input_str.isdigit() and len(input_str) <= 6:
+    if input_str.isdigit() and len(input_str) <= 3:
         return True
     else:
         return False

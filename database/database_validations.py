@@ -2,34 +2,6 @@ import mysql.connector
 import database.database_connector as database_connector
 
 
-def check_user_code(code):
-
-  checker = False
-  
-  mydb = database_connector.open_db_connection()
-
-  if mydb.is_connected():
-      print("Connected to MySQL database")
-          
-  sql = "SELECT USER_ID, BOX_ID FROM user_take_item WHERE CODE = %s"
-
-  mycursor = mydb.cursor()
-  mycursor.execute(sql, (code,))
-  results = mycursor.fetchall()
-
-  if len(results) == 0:
-    print("No user found with CODE {}".format(code))
-    mydb.close()
-    
-  else:
-    
-    for result in results:
-      checker = True
-      print("USER_ID: {}, BOX_ID: {}".format(result[0], result[1]))
-
-  database_connector.close_db_connection(mydb)
-  
-  return checker
   
 def get_user_picture(item_id):
   
