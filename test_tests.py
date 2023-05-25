@@ -3,7 +3,7 @@ from unittest.mock import patch
 import tkinter as tk
 import server.client as client
 import database.database_validations as database_validations
-import picture_wia_laptop_camera
+import image_things.picture_wia_laptop_camera as picture_wia_laptop_camera
 import main
 
 class TestMain(unittest.TestCase):

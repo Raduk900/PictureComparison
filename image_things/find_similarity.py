@@ -1,18 +1,20 @@
-import picture_wia_laptop_camera
-import image_helper
+import image_things.picture_wia_laptop_camera as picture_wia_laptop_camera
+import image_things.image_helper as image_helper
 import cv2
-import image_preparation
-import convertors
-import orb_similarity
+import image_things.image_preparation as image_preparation
+import image_things.convertors as convertors
+import image_things.orb_similarity as orb_similarity
 
 # picture_wia_laptop_camera.capture_with_screenshot()
 
 last_image = image_helper.take_last_gray_image()
-image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/image6.jpg", cv2.IMREAD_GRAYSCALE)
+image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/picture_for_comparison.jpg", cv2.IMREAD_GRAYSCALE)
 
 def black_and_white_similartity(image1, image2):
     
     black1, black2 = image_preparation.convert_to_black_white(image1, image2)
+    
+    image_helper.show_image(image2)
     
     black1_pil = convertors.convert_cv2_to_pil(black1)
     black2_pil = convertors.convert_cv2_to_pil(black2)

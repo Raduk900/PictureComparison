@@ -2,8 +2,8 @@ import cv2
 from rembg import remove
 from PIL import Image
 
-img1 = image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/image7.jpg", cv2.IMREAD_GRAYSCALE)
-img2 = image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/image7.jpg", cv2.IMREAD_GRAYSCALE)
+# img1 = image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/image7.jpg", cv2.IMREAD_GRAYSCALE)
+# img2 = image_for_compare = cv2.imread("C:/Users/radtitk/Desktop/bakalaur/PictureComparison/image7.jpg", cv2.IMREAD_GRAYSCALE)
 
 def convert_to_black_white(img1, img2):
     (thresh, im_bw1) = cv2.threshold(img1, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
@@ -35,4 +35,4 @@ def blur_images(img1, img2):
     
     return blur1, blur2
 
-convert_to_black_white(img1,img2)
+# convert_to_black_white(img1,img2)

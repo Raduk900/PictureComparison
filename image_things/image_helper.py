@@ -37,6 +37,9 @@ def show_image(img):
     cv2.destroyAllWindows() 
     
 def download_image(url):
+    
+    print("it is url: ", url)
+    
     filename = "image.jpg"
 
     response = requests.get(url)

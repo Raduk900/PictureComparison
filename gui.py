@@ -1,9 +1,10 @@
 import tkinter as tk
 import server.client as client
-import picture_wia_laptop_camera
+import image_things.picture_wia_laptop_camera as picture_wia_laptop_camera
 import database.database_validations as database_validations
 from tkinter import messagebox
-import image_helper
+import image_things.image_helper as image_helper
+import time
 
 client.open_socket()
 
@@ -55,9 +56,11 @@ def add_item_click():
 
 def submit_id(id_window, id_field):
     item_id = id_field.get()
-    
+
     url = database_validations.get_user_picture(item_id)
 
+    print(url)
+    
     id_window.destroy()
 
     if item_id:      
@@ -65,6 +68,7 @@ def submit_id(id_window, id_field):
         client.sending_data(item_id)
     else:
         print("ID cannot be empty.")
+    
 
 def take_item_click():
     label.config(text="Enter your code")
@@ -96,7 +100,7 @@ def take_item_click():
     input_field.focus()
 
     def check_input_length(*args):
-        if len(input_field.get()) == 3:
+        if len(input_field.get()) == 6:
             submit_button.config(state="normal")
         else:
             submit_button.config(state="disabled")
@@ -104,7 +108,7 @@ def take_item_click():
     input_field.bind('<KeyRelease>', check_input_length)
 
 def validate_input(input_str):
-    if input_str.isdigit() and len(input_str) <= 3:
+    if input_str.isdigit() and len(input_str) <= 6:
         return True
     else:
         return False
@@ -113,16 +117,20 @@ def validate_input(input_str):
 def submit_click(input_field, submit_button):
     input_text = input_field.get()
     print("Input text:", input_text)
-    print(database_validations.check_user_code(input_text))
-    if database_validations.check_user_code(input_text):
-        client.sending_data(input_text)
-        input_field.delete(0, tk.END)
+    box = database_validations.check_user_code(input_text)
+    print(box)
+    if box == int(1):
+        client.sending_data(101)
+        time.sleep(10)
+        client.sending_data(202)
+    elif box == int(2):    
+        client.sending_data(111)
+        time.sleep(10)
+        client.sending_data(222)
     else:
-        print("something there")
-        tk.messagebox.showerror("Invalid Code", "Reservation code is incorrect.")
+        messagebox.showerror("Invalid Code", "Reservation code is incorrect.")
         input_field.delete(0, tk.END)
         input_field.focus()
-        # take_item_click()
     
 
 label = tk.Label(window, text="Choose an action", font=("Arial", 14), bg="#f0f0f0")
