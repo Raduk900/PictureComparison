@@ -20,8 +20,8 @@ def send_post_request_verify_product(id):
     print(response.status_code)
     print(response.text)
 
-id_value = "e05a23c9-fbb2-4f87-b34a-b8cbea61136b"
-send_post_request_delete_product(id_value)
+# id_value = "e05a23c9-fbb2-4f87-b34a-b8cbea61136b"
+# send_post_request_delete_product(id_value)
 # send_post_request_verify_product(id_value)
 
 # import requests

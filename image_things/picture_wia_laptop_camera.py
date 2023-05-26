@@ -21,8 +21,6 @@ def capture_with_screenshot(url):
     
     exit_camera = False
     
-    print("THis is url in puicefasd: ", url)
-    
     # #full screen video
     # cv2.namedWindow('frame', cv2.WND_PROP_FULLSCREEN)
     # cv2.setWindowProperty('frame', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
@@ -87,12 +85,6 @@ def capture_with_screenshot(url):
                 print("Unsuccessful validation")
                 tk.messagebox.showerror("Error", "Unsuccessful validation")
                 
-                
-
-
-        # # Check if the key pressed is 'q'
-        # if key == ord('q'):
-        #     break
 
     cap.release()
     # cv2.destroyAllWindows()
