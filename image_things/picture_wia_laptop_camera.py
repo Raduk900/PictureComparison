@@ -72,7 +72,7 @@ def capture_with_screenshot(url):
             
             score = grey_similarity_result + blur_similarity_result + no_bg_similarity_result
             
-            if(score > 0,1):
+            if(score > 1):
                 client.sending_data(int(101))
                 # print(score)
                 print("Successful validation")
