@@ -19,11 +19,6 @@ def check_user_code(code):
     print("No user found with CODE {}".format(code))
     mydb.close()
     return 0
-
-  # for result in results:
-  #   print("USER_ID: {}, BOX_ID: {}".format(result[0], result[1]))
-
-  # database_connector.close_db_connection(mydb)
   
   print("test: ", results[0][1])
   
@@ -108,10 +103,8 @@ def get_user_picture(item_id):
 def add_to_user_take_item():
     mydb = database_connector.open_db_connection()
 
-    # Get the next highest USER_ID
     user_id = get_next_highest_id(mydb, "USER_ID", "user_take_item")
 
-    # Get the next highest BOX_ID
     box_id = get_next_highest_id(mydb, "BOX_ID", "user_take_item")
 
     sql = "INSERT INTO user_take_item (USER_ID, BOX_ID) VALUES (%s, %s)"
