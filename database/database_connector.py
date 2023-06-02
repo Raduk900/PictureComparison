@@ -18,15 +18,3 @@ def close_db_connection(mydb):
     mydb.close()
     
 
-# mydb = open_db_connection()
-    
-# mycursor = mydb.cursor()
-
-# mycursor.execute("SELECT * FROM user_give_item")
-
-# myresult = mycursor.fetchall()
-
-# for x in myresult:
-#   print(x)
-  
-# close_db_connection(mydb)
