@@ -61,15 +61,15 @@ def submit_id(id_window, id_field):
     url = database_validations.get_user_picture(item_id)
 
     print(url)
-    
+
     id_window.destroy()
 
-    if item_id:      
+    if item_id:
         picture_wia_laptop_camera.capture_with_screenshot(url)
         client.sending_data(item_id)
     else:
         print("ID cannot be empty.")
-    
+
 
 def take_item_click():
     label.config(text="Enter your code")
@@ -119,16 +119,17 @@ def submit_click(input_field, submit_button):
     input_text = input_field.get()
     print("Input text:", input_text)
     box = database_validations.check_user_code(input_text)
-    
+    print(box)
+
     if box:
         uniq_code = database_validations.get_item_unique_code_take_item(input_text)
         http_client.send_post_request_delete_product(uniq_code)
-        print(uniq_code)
-    if box == int(1):
+        print('unique code:', uniq_code)
+    if int(box) == int(1):
         client.sending_data(101)
         time.sleep(10)
         client.sending_data(202)
-    elif box == int(2):    
+    elif int(box) == int(2):
         client.sending_data(111)
         time.sleep(10)
         client.sending_data(222)
@@ -138,7 +139,7 @@ def submit_click(input_field, submit_button):
         input_field.focus()
     if box:
         database_validations.delete_user_by_code(input_text)
-    
+
 
 label = tk.Label(window, text="Choose an action", font=("Arial", 14), bg="#f0f0f0")
 label.pack(pady=(50,10))

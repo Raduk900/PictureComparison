@@ -19,11 +19,11 @@ def check_user_code(code):
     print("No user found with CODE {}".format(code))
     mydb.close()
     return 0
-  
+
   print("test: ", results[0][1])
-  
+
   return results[0][1]
-  
+
 def get_user_email(item_id):
 
   mydb = database_connector.open_db_connection()
@@ -42,11 +42,11 @@ def get_user_email(item_id):
   print("PICTURE_URL: {}".format(result[0]))
 
   database_connector.close_db_connection(mydb)
-  
+
 def get_item_unique_code_give_item(item_id):
-  
+
   mydb = database_connector.open_db_connection()
-  
+
   sql = "SELECT UNIQUE_CODE FROM user_give_item WHERE ITEM_ID = %s"
 
   mycursor = mydb.cursor()
@@ -55,17 +55,17 @@ def get_item_unique_code_give_item(item_id):
 
   if not result:
     print("No unique code found for ITEM_ID {}".format(item_id))
-    
+
   print("Unique code: {}".format(result[0]))
-  
+
   database_connector.close_db_connection(mydb)
-  
+
   return result[0]
 
 def get_item_unique_code_take_item(code):
-  
+
   mydb = database_connector.open_db_connection()
-  
+
   sql = "SELECT UNIQUE_CODE FROM user_take_item WHERE CODE = %s"
 
   mycursor = mydb.cursor()
@@ -74,17 +74,17 @@ def get_item_unique_code_take_item(code):
 
   if not result:
     print("No unique code found for CODE {}".format(code))
-    
+
   print("Unique code: {}".format(result[0]))
-  
+
   database_connector.close_db_connection(mydb)
-  
+
   return result[0]
-  
+
 def get_user_picture(item_id):
-  
+
   mydb = database_connector.open_db_connection()
-  
+
   sql = "SELECT PICTURE_URL FROM user_give_item WHERE ITEM_ID = %s"
 
   mycursor = mydb.cursor()
@@ -93,11 +93,11 @@ def get_user_picture(item_id):
 
   if not result:
     print("No picture URL found for ITEM_ID {}".format(item_id))
-    
+
   print("PICTURE_URL: {}".format(result[0]))
-  
+
   database_connector.close_db_connection(mydb)
-  
+
   return result[0]
 
 def add_to_user_take_item():
@@ -131,7 +131,7 @@ def get_next_highest_id(mydb, column, table):
         next_highest_id = 1
 
     return next_highest_id
-  
+
 def delete_user_by_code(code):
     mydb = database_connector.open_db_connection()
 
@@ -146,7 +146,7 @@ def delete_user_by_code(code):
     print("Deleted {} row(s) from user_take_item".format(deleted_rows))
 
     database_connector.close_db_connection(mydb)
- 
+
 def add_item_to_user(member_id, unique_code, photo_url, uniqueCode):
     mydb = database_connector.open_db_connection()
 
@@ -159,13 +159,13 @@ def add_item_to_user(member_id, unique_code, photo_url, uniqueCode):
 
     print("Row added to user_add_item")
 
-    database_connector.close_db_connection(mydb) 
-    
+    database_connector.close_db_connection(mydb)
+
 def take_item_to_user(member_id, unique_code, photo_url, uniqueCode):
     mydb = database_connector.open_db_connection()
 
     sql = "INSERT INTO user_take_item (USER_ID, BOX_ID, CODE, UNIQUE_CODE) VALUES (%s, %s, %s, %s)"
-    values = (member_id, unique_code, photo_url, uniqueCode)
+    values = (member_id, unique_code, uniqueCode, photo_url)
 
     mycursor = mydb.cursor()
     mycursor.execute(sql, values)
@@ -173,5 +173,5 @@ def take_item_to_user(member_id, unique_code, photo_url, uniqueCode):
 
     print("Row added to user_add_item")
 
-    database_connector.close_db_connection(mydb) 
-    
+    database_connector.close_db_connection(mydb)
+

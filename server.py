@@ -1,18 +1,22 @@
 import socket
 import json
 import requests
-import database.database_validations as database_validations
+import sys
+import os
+from database import database_validations
+
+# import database.database_validations as database_validations
 
 def get_request_path(request_data):
     lines = request_data.split('\n')
     first_line = lines[0].strip()
-    
+
     if first_line.startswith('POST'):
         parts = first_line.split()
         if len(parts) >= 2:
             path = parts[1]
             return path
-    
+
     return None
 
 def get_json_from_request(request):
@@ -49,20 +53,20 @@ while True:
             json_data = get_json_from_request(data.decode("utf-8"))
             if json_data:
                 print("JSON data from client:", json_data)
-                
+
                 productId = json_data.get('productId')
                 memberId = json_data.get('memberId')
                 photoUrl = json_data.get('photoUrl')
                 uniqueCode = json_data.get('uniqueCode')
-                
+
                 if request_path == '/api/addproduct':
                     database_validations.add_item_to_user(memberId, productId, "192.168.69.64:5000" + photoUrl, uniqueCode)
                 if request_path == '/api/addreservation':
-                    database_validations.take_item_to_user(memberId, '1', productId, uniqueCode)                    
+                    database_validations.take_item_to_user(memberId, '1', productId, uniqueCode)
                 client_socket.close()
-                
+
                 client_socket, addr = server_socket.accept()
-                
+
             else:
                 print("Failed to extract JSON data from the request")
         except json.JSONDecodeError:
